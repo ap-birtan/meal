@@ -29,15 +29,19 @@ for(let i=1;i<=days[mon];i++)
 	   cal.innerHTML+="<br>";	
 	}
 }
-
+const td=new Date().getDate();
 function tog(bid) {
 
+
+if(parseInt(bid.id.slice(2))>td)
+{
 if(bid.style.background=="green"||bid.style.background=="")
 	bid.style.background="red";
 else
 	bid.style.background="green";
 
 	
+}
 
 
 }
