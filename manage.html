@@ -5,8 +5,35 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="sty.css">
+	<style>
+#tab {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+  margin-left: 25%;
+}
+
+#tab td, #tab th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#tab tr:nth-child(even){background-color: #f2f2f2;}
+
+#tab tr:hover {background-color: #ddd;}
+
+#tab th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
 </head>
 <body>
+	<div style="text-align: center; font-size: 30px;">BIRTAN DORMITORY MEAL SYSTEM</div><hr>
+	<div id="mo_name" style="text-align: center; font-size: 30px;"></div>
 <table id="tab" border="2"><th>নাম</th><th>সকাল</th><th>দুপুর</th><th>রাত</th></table>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -43,8 +70,7 @@ rf.once('value', function(snapshot) {
     rows(obs);
 });
 
-var rf=firebase.database().ref("meal"); 
-
+console.log(obs);
 
 
 
@@ -69,7 +95,7 @@ function rows(cds)
 
 }
 
-document.getElementById("tab").innerHTML+="<tr><td>Total</td><td>"+mor+"</td><td>"+noon+"</td><td>"+night+"</td></tr>";
+document.getElementById("tab").innerHTML+="<tr><td>Total</td><td><b>"+mor+"</b></td><td><b>"+noon+"</b></td><td><b>"+night+"</b></td></tr>";
 
 }
 function kotha(i)
