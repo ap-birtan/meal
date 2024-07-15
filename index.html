@@ -11,16 +11,24 @@
 
 <div style="width: 90%; margin-left: 5%; text-align: center;display: none;" id="cal">
 
-<div id="month" style="width: 100%; text-align: center; font-size: 40px;"></div>
+<div id="month" style="width: 100%; text-align: center; font-size: 30px;"></div>
 
 
 
 
 </div>
-<br><br>
-<button id="sub" style="margin-left: 35%; width: 30%; display: none;">UPDATE</button>
+<br>
+<br>
+<table style="width: 100%; text-align: center;">
 
 
+
+<tr>
+<td><button style="width: 50%;display: none;margin-left: 50%;" id="prv">prev</button></td>
+<td><button id="sub" style="width: 50%; display: none; margin-left: 25%">UPDATE</button> </td>
+<td><button style="width: 50%; display: none;" id="nxt">Next</button></td>
+</tr>
+</table>
 
 <br><br>
 <div id="divf">
@@ -55,12 +63,130 @@
   };
 firebase.initializeApp(firebaseConfig);
 
+function isleap(year) {
+	if(year%400==0)
+	{
+       return true;
+	}
+	else if(year%4==0&&year%100!=0)
+	{
+       return true;
+	}
+	else
+		return false;
+}
+
+let cal=document.getElementById("cal");
+const days=[31,29,31,30,31,30,31,31,30,31,30,31];
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+let offset=0;
+function load_days(){
+	cal.innerHTML='<div id="month" style="width: 100%; text-align: center; font-size: 30px;"></div>';
+	let mon=new Date().getMonth()+offset;
+document.getElementById("month").innerHTML=months[mon];
+
+for(let i=1;i<=days[mon];i++)
+{
+
+	cal.innerHTML+='<button class="date"  id="bm'+i+'">'+i+'<br>সকাল</button>';
+	cal.innerHTML+='<button class="date"  id="bn'+i+'">'+i+'<br>দুপুর</button>';
+	cal.innerHTML+='<button class="date"  id="bt'+i+'">'+i+'<br>রাত</button>';
+	document.getElementById("bm"+i).onclick=tog;
+	document.getElementById("bn"+i).onclick=tog;
+	document.getElementById("bt"+i).onclick=tog;
+
+
+
+	if(i%4==0)
+	{
+	   cal.innerHTML+="<br>";	
+	}
+}
+}
+function next()
+{ 
+	offset+=1;
+	loadlist();
+	load_days();
+	loadname();
+	att();
+	loadmeal();
+	if(new Date().getMonth()+offset>11)
+	{
+		offset=0;
+		console.log(new Date().getMonth()+offset);
+	}
+
+
+
+}
+function prev()
+{ 
+	offset-=1;
+	loadlist();
+	load_days();
+	loadname();
+	att();
+	loadmeal();
+	if(new Date().getMonth()+offset<0)
+	{
+		offset=0;
+		console.log(new Date().getMonth()+offset);
+	}
+ 
+
+
+}
+document.getElementById("nxt").onclick=next;
+document.getElementById("prv").onclick=prev;
+
+function att()
+{
+	let mon=new Date().getMonth()+offset;
+
+	for(let i=1;i<=days[mon];i++)
+{
+
+
+	document.getElementById("bm"+i).onclick=tog;
+	document.getElementById("bn"+i).onclick=tog;
+	document.getElementById("bt"+i).onclick=tog;
+
+
+
+}
+}
+load_days();
+att();
+const td=new Date().getDate();
+function tog() {
+
+	let bid=this.id;
+
+let mon=new Date().getMonth()+offset;
+let cur_mon=new Date().getMonth();
+
+if(parseInt(mon)*100+parseInt(bid.slice(2))>parseInt(td)+parseInt(cur_mon)*100)
+{
+if(document.getElementById(bid).style.background=="green"||document.getElementById(bid).style.background=="")
+	document.getElementById(bid).style.background="red";
+else
+	document.getElementById(bid).style.background="green";
+
+	
+}
+//console.log(parseInt(mon)*100+parseInt(bid.slice(2)),parseInt(td)+parseInt(cur_mon)*100);
+
+}
 
 	if(sessionStorage.getItem("pkey")!=null)
 	{
 		          	document.getElementById("divf").style.display='none';
 	                document.getElementById("cal").style.display='block';
 	                document.getElementById("sub").style.display='block';
+	                document.getElementById("nxt").style.display='block';
+	                document.getElementById("prv").style.display='block';
+
 	                loadname();
 	                loadmeal();
 	}
@@ -84,7 +210,7 @@ function loadlist(){
               });
 
 
-console.log(usr);
+
 
 }
 
@@ -96,6 +222,8 @@ function getin()
           	document.getElementById("divf").style.display='none';
 	        document.getElementById("cal").style.display='block';
 	        document.getElementById("sub").style.display='block';
+	        document.getElementById("nxt").style.display='block';
+	        document.getElementById("prv").style.display='block';
 	        sessionStorage.setItem("pkey",document.getElementById("lname").value);
 	        loadmeal();
 	        loadname();
@@ -108,9 +236,10 @@ function getin()
 
 document.getElementById('ss').onclick=getin;
 
-let name="null";
+
 function loadname()
 {
+	let name="null";
 	
 	var rf=firebase.database().ref("meal/"+sessionStorage.getItem("pkey")+"/");
 	rf.once("value", function(snapshot) {
@@ -134,12 +263,13 @@ function loadmeal()
 var rf=firebase.database().ref("meal/"+sessionStorage.getItem("pkey")+"/");
 let name="null";
 let his="aaa";
+let mon=new Date().getMonth()+offset;
 
-var me = rf.child("july/");
+var me = rf.child(months[mon]+"/");
 me.once("value", function(snapshot) {
   his=snapshot.child("mealseq").val();
-
-  his=his.replaceAll(',','');
+  if(his!=null)
+ { his=his.replaceAll(',','');
   
   for(let i=1; i<=days[mon];i++)
 {
@@ -180,6 +310,7 @@ me.once("value", function(snapshot) {
 
 
 }
+}
     
 });
 
@@ -189,12 +320,11 @@ me.once("value", function(snapshot) {
 
 
 
-let mon=new Date().getMonth();
-const days=[31,29,31,30,31,30,31,31,30,31,30,31];
-const months = ["January","February","March","April","May","June","july","August","September","October","November","December"];
+
 
 
 function update_meal() {
+	let mon=new Date().getMonth()+offset;
 
 var rf=firebase.database().ref("meal/"+sessionStorage.getItem("pkey")+"/"+months[mon]);    
 for(let i=1; i<=days[mon];i++)
@@ -236,7 +366,7 @@ mealseq: seq+"",
 
 });
 
-window.location.reload();
+alert('updated');
 }
 
 document.getElementById('sub').onclick=update_meal;
@@ -246,7 +376,7 @@ let seq=[];
 
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
-<script type="text/javascript" src="cd.js"></script>
+
 
 </body>
 </html>
