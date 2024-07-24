@@ -75,9 +75,25 @@ console.log(obs);
 
 
 }
-
+//this function to covert string month name to object.
+Object.byString = function(o, s) {
+    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    var a = s.split('.');
+    for (var i = 0, n = a.length; i < n; ++i) {
+        var k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return;
+        }
+    }
+    return o;
+}
 let date=new Date().getDate();
-
+let mon=new Date().getMonth();
+const months = ["January","February","March","April","May","June","July"
+	,"August","September","October","November","December"];
 function rows(cds)
 {
 	let mor=0;
@@ -85,7 +101,8 @@ function rows(cds)
 	let night=0;
   for(var i=0;i<cds.length;i++){
     var cd=cds[i];
-    var ms=cd.july.mealseq.replaceAll(',','');
+    var ms=Object.byString(cd,months[mon]);
+    ms=ms.mealseq.replaceAll(',','');
   document.getElementById("tab").innerHTML+="<tr><td>"+cd.name+"</td><td>"+kotha(ms[date*3-3])+"</td><td>"+kotha(ms[date*3-2])+"</td><td>"+kotha(ms[date*3-1])+"</td></tr>";
 
   mor+=parseInt(ms[date*3-3]);
@@ -153,11 +170,6 @@ function loadname()
 
 
 
-
-
-let mon=new Date().getMonth();
-const days=[31,29,31,30,31,30,31,31,30,31,30,31];
-const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 
 
