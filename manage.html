@@ -36,9 +36,11 @@
   <div id="mndt" style="font-size: 25px; text-align: center; color: red;"></div>
   <div style="width: 80%;margin-left: 10%;">
     <button id="pp">Prev Day</button>
-    <button id="nn" style="float: right;">Next Day</button></div>
-	<div id="mo_name" style="text-align: center; font-size: 30px;"></div>
-<table id="tab" border="2"><th>নাম</th><th>সকাল</th><th>দুপুর</th><th>রাত</th></table>
+    <button id="nn" style="float: right;">Next Day</button>
+    <div id="mo_name" style="text-align: center; font-size: 30px;"></div>
+    <table id="tab" border="2"><th>নাম</th><th>সকাল</th><th>দুপুর</th><th>রাত</th></table>
+  </div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase,ref,set,get,child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
