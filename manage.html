@@ -33,6 +33,10 @@
 </head>
 <body>
 	<div style="text-align: center; font-size: 30px;">BIRTAN DORMITORY MEAL SYSTEM</div><hr>
+  <div id="mndt" style="font-size: 25px; text-align: center; color: red;"></div>
+  <div style="width: 80%;margin-left: 10%;">
+    <button id="pp">Prev Day</button>
+    <button id="nn" style="float: right;">Next Day</button></div>
 	<div id="mo_name" style="text-align: center; font-size: 30px;"></div>
 <table id="tab" border="2"><th>নাম</th><th>সকাল</th><th>দুপুর</th><th>রাত</th></table>
 <script type="module">
@@ -92,13 +96,13 @@ Object.byString = function(o, s) {
 }
 let date=new Date().getDate();
 let mon=new Date().getMonth();
-const months = ["January","February","March","April","May","June","July"
-	,"August","September","October","November","December"];
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 function rows(cds)
 {
 	let mor=0;
 	let noon=0;
 	let night=0;
+  document.getElementById("mndt").innerHTML=date+" "+months[mon]
   for(var i=0;i<cds.length;i++){
     var cd=cds[i];
     var ms=Object.byString(cd,months[mon]);
@@ -108,6 +112,7 @@ function rows(cds)
   mor+=parseInt(ms[date*3-3]);
   noon+=parseInt(ms[date*3-2]);
   night+=parseInt(ms[date*3-1]);
+  console.log(ms[date*3-3],ms[date*3-2],ms[date*3-1]);
 
 
 }
@@ -165,10 +170,36 @@ function loadname()
 
 
 }
+let di=0;
 
+let nd=new Date();
+function nxt()
+{
+  
+  
+  nd.setDate(nd.getDate() + 1);
+  date=nd.getDate();
+  mon=nd.getMonth();
+  document.getElementById("tab").innerHTML="<th>নাম</th><th>সকাল</th><th>দুপুর</th><th>রাত</th>";
+  load_tot();
+  
 
+}
+document.getElementById("nn").onclick=nxt;
 
+function prv()
+{
+  
 
+  nd.setDate(nd.getDate() -1);
+  date=nd.getDate();
+  mon=nd.getMonth();
+  document.getElementById("tab").innerHTML="<th>নাম</th><th>সকাল</th><th>দুপুর</th><th>রাত</th>";
+  load_tot();
+  
+
+}
+document.getElementById("pp").onclick=prv;
 
 
 
