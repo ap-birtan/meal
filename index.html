@@ -217,9 +217,15 @@ function loadlist(){
 loadlist();
 function getin()
 {
+	if(usr.length==0)
+	{
+		alert("wait a bit, please!");
+	}
+	else
+	{
 	if(usr.includes(document.getElementById("lname").value))
 	{
-          	document.getElementById("divf").style.display='none';
+          document.getElementById("divf").style.display='none';
 	        document.getElementById("cal").style.display='block';
 	        document.getElementById("sub").style.display='block';
 	        document.getElementById("nxt").style.display='block';
@@ -232,6 +238,7 @@ function getin()
 	{
 		alert("wrong passkey");
 	}
+}
 }
 
 document.getElementById('ss').onclick=getin;
